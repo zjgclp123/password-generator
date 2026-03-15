@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator - Secure Password App</title>
+    <meta name="description" content="Generate secure passwords with this free online password generator">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .container { background: white; border-radius: 20px; padding: 30px; width: 100%; max-width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        h1 { text-align: center; color: #1a1a2e; margin-bottom: 20px; font-size: 24px; }
+        .password-display { background: #f5f5f5; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 20px; word-break: break-all; font-family: 'Courier New', monospace; font-size: 18px; color: #333; min-height: 60px; display: flex; align-items: center; justify-content: center; }
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 16px; cursor: pointer; transition: all 0.3s; margin-bottom: 15px; }
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4); }
+        .btn-secondary { background: #4CAF50; color: white; }
+        .btn-secondary:hover { background: #45a049; }
+        .options { margin-bottom: 15px; }
+        .option { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
+        .option label { color: #333; }
+        .slider-container { margin-bottom: 20px; }
+        .slider-container label { display: block; color: #333; margin-bottom: 10px; }
+        .slider-container input { width: 100%; }
+        .length-display { text-align: center; font-size: 24px; color: #667eea; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Password Generator</h1>
+        <div class="password-display" id="password"></div>
+        <button class="btn btn-primary" onclick="generatePassword()">Generate Password</button>
+        <button class="btn btn-secondary" onclick="copyPassword()">Copy to Clipboard</button>
+        <div class="slider-container">
+            <label>Password Length: <span class="length-display" id="lengthValue">16</span></label>
+            <input type="range" min="4" max="64" value="16" id="length" onchange="updateLength()">
+        </div>
+        <div class="options">
+            <div class="option">
+                <label>Include Numbers (0-9)</label>
+                <input type="checkbox" id="numbers" checked>
+            </div>
+            <div class="option">
+                <label>Include Uppercase (A-Z)</label>
+                <input type="checkbox" id="uppercase" checked>
+            </div>
+            <div class="option">
+                <label>Include Lowercase (a-z)</label>
+                <input type="checkbox" id="lowercase" checked>
+            </div>
+            <div class="option">
+                <label>Include Symbols (!@#$%)</label>
+                <input type="checkbox" id="symbols" checked>
+            </div>
+        </div>
+    </div>
+    <script>
+        function generatePassword() {
+            const length = document.getElementById('length').value;
+            const useNumbers = document.getElementById('numbers').checked;
+            const useUppercase = document.getElementById('uppercase').checked;
+            const useLowercase = document.getElementById('lowercase').checked;
+            const useSymbols = document.getElementById('symbols').checked;
+            let chars = '';
+            if (useNumbers) chars += '0123456789';
+            if (useUppercase) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            if (useLowercase) chars += 'abcdefghijklmnopqrstuvwxyz';
+            if (useSymbols) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+            if (!chars) chars = 'abcdefghijklmnopqrstuvwxyz';
+            let password = '';
+            for (let i = 0; i < length; i++) { password += chars.charAt(Math.floor(Math.random() * chars.length)); }
+            document.getElementById('password').textContent = password;
+        }
+        function updateLength() { document.getElementById('lengthValue').textContent = document.getElementById('length').value; }
+        function copyPassword() { const password = document.getElementById('password').textContent; if (password) { navigator.clipboard.writeText(password); alert('Copied!'); } }
+        generatePassword();
+    </script>
+</body>
+</html>
